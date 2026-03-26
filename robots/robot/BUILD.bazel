@@ -1,0 +1,18 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "robot",
+    srcs = glob(["*.go"]),
+    importpath = "go.atoms.co/splitter-examples/robots/robot",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//robots/proto",
+        "@co_atoms_go_lib//encoding/protox",
+        "@co_atoms_go_lib//iox",
+        "@co_atoms_go_lib//log",
+        "@co_atoms_go_lib//net/grpcx",
+        "@co_atoms_go_lib//service/logx",
+        "@co_atoms_go_lib//signalx",
+        "@com_github_spf13_cobra//:cobra",
+    ],
+)

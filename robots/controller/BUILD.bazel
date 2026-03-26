@@ -1,0 +1,26 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "controller",
+    srcs = glob(["*.go"]),
+    importpath = "go.atoms.co/splitter-examples/robots/controller",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//robots/proto",
+        "@co_atoms_go_lib//backoffx",
+        "@co_atoms_go_lib//chanx",
+        "@co_atoms_go_lib//encoding/protox",
+        "@co_atoms_go_lib//iox",
+        "@co_atoms_go_lib//log",
+        "@co_atoms_go_lib//mapx",
+        "@co_atoms_go_lib//net/grpcx",
+        "@co_atoms_go_lib//service/logx",
+        "@co_atoms_go_lib//signalx",
+        "@co_atoms_go_lib//syncx",
+        "@co_atoms_go_splitter//lib/service/location",
+        "@co_atoms_go_splitter//pkg/model",
+        "@com_github_google_uuid//:uuid",
+        "@com_github_spf13_cobra//:cobra",
+        "@org_golang_google_grpc//:grpc",
+    ],
+)

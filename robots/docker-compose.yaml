@@ -1,0 +1,105 @@
+services:
+
+  robot-0:
+    container_name: robot-0
+    image: atoms.co/splitter-examples-robots:latest
+    command: >
+      robot
+      start
+      --name robot-0
+      --logger=standard
+      --endpoint controller-0:50051
+    profiles: ["robots"]
+
+  robot-1:
+    container_name: robot-1
+    image: atoms.co/splitter-examples-robots:latest
+    command: >
+      robot
+      start
+      --name robot-1
+      --logger=standard
+      --endpoint controller-0:50051
+    profiles: ["robots"]
+
+  controller-0:
+    container_name: controller-0
+    image: atoms.co/splitter-examples-robots:latest
+    command: >
+      controller
+      start
+      --instance=controller-0
+      --logger=standard
+      --splitter-endpoint=splitter-0:50051
+    environment:
+      HOSTNAME: controller-0
+    profiles: ["robots"]
+    ports:
+      - "8501:50051"
+      - "8511:50052"
+
+  controller-1:
+    container_name: controller-1
+    image: atoms.co/splitter-examples-robots:latest
+    command: >
+      controller
+      start
+      --instance=controller-1
+      --logger=standard
+      --splitter-endpoint=splitter-0:50051
+    environment:
+      HOSTNAME: controller-1
+    profiles: ["robots"]
+    ports:
+      - "8502:50051"
+      - "8512:50052"
+
+  splitter-0:
+    image: "atoms.co/splitter:latest"
+    volumes:
+      - ${SPLITTER_DATA}/data0:/data
+    command: >
+      /usr/local/bin/splitter
+      start
+      --logger=standard
+      --splitter_server=splitter-0:50052
+      --fast_activation
+      --raft_fast_bootstrap
+      --raft_id=splitter-0
+      --raft_server=splitter-0:50053
+      --raft_join_peers=splitter-0:50052,splitter-1:50052,splitter-2:50052
+    profiles: ["splitter"]
+    ports:
+      - "8500:50051"
+
+  splitter-1:
+    image: "atoms.co/splitter:latest"
+    volumes:
+      - ${SPLITTER_DATA}/data1:/data
+    command: >
+      /usr/local/bin/splitter
+      start
+      --logger=standard
+      --splitter_server=splitter-1:50052
+      --fast_activation
+      --raft_fast_bootstrap
+      --raft_id=splitter-1
+      --raft_server=splitter-1:50053
+      --raft_join_peers=splitter-0:50052,splitter-1:50052,splitter-2:50052
+    profiles: ["splitter"]
+
+  splitter-2:
+    image: "atoms.co/splitter:latest"
+    volumes:
+      - ${SPLITTER_DATA}/data2:/data
+    command: >
+      /usr/local/bin/splitter
+      start
+      --logger=standard
+      --splitter_server=splitter-2:50052
+      --fast_activation
+      --raft_fast_bootstrap
+      --raft_id=splitter-2
+      --raft_server=splitter-2:50053
+      --raft_join_peers=splitter-0:50052,splitter-1:50052,splitter-2:50052
+    profiles: ["splitter"]

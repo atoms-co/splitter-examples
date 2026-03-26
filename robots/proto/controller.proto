@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package atoms.splitter.examples.robots;
+
+option go_package = "go.atoms.co/splitter-examples/robots/proto";
+
+// Register is a message with robot information. Must be the first message
+// sent by a robot on connecting.
+message Register {
+  string name = 1;
+}
+
+// Move is a command to move to a location. Can be sent by a client or by a controller
+// to a robot.
+message Move {
+  string location = 1;
+}
+
+// ConnectMessage is a message used for communication between a robot and a controller.
+message ConnectMessage {
+  oneof msg {
+    Register register = 1;
+    Move move = 2;
+  }
+}
+
+// ActionRequest is a client request to perform some action by a robot
+message ActionRequest {
+  // robot is the name of the target robot
+  string robot = 1;
+  oneof action {
+    Move move = 2;
+  }
+}
+
+message ActionResponse {
+}
+
+// RobotService is a service used by robots and by clients to control robots
+service RobotService {
+  // Connect is a streaming interface for robots to connect to.
+  rpc Connect (stream ConnectMessage) returns (stream ConnectMessage);
+
+  // Act provides access to robot functionality for clients.
+  rpc Act(ActionRequest) returns (ActionResponse);
+}

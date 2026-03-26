@@ -1,0 +1,46 @@
+bazel_dep(name = "bazel_lib", version = "3.0.0")
+bazel_dep(name = "rules_go", version = "0.59.0")
+bazel_dep(name = "gazelle", version = "0.48.0")
+bazel_dep(name = "platforms", version = "1.0.0")
+bazel_dep(name = "protobuf", version = "34.1", repo_name = "com_google_protobuf")
+bazel_dep(name = "rules_android", version = "0.7.1")
+bazel_dep(name = "rules_oci", version = "2.3.0")
+bazel_dep(name = "tar.bzl", version = "0.7.0")
+
+go_sdk = use_extension("@rules_go//go:extensions.bzl", "go_sdk")
+go_sdk.from_file(go_mod = "//:go.mod")
+
+go_deps = use_extension("@gazelle//:extensions.bzl", "go_deps")
+go_deps.gazelle_override(
+    build_file_generation = "clean",
+    directives = [
+        "gazelle:proto disable",
+    ],
+    path = "go.atoms.co/splitter",
+)
+go_deps.from_file(go_mod = "//:go.mod")
+use_repo(
+    go_deps,
+    "co_atoms_go_lib",
+    "co_atoms_go_splitter",
+    "com_github_google_uuid",
+    "com_github_spf13_cobra",
+    "org_golang_google_grpc",
+)
+
+oci = use_extension("@rules_oci//oci:extensions.bzl", "oci")
+oci.pull(
+    name = "distroless_base",
+    digest = "sha256:ccaef5ee2f1850270d453fdf700a5392534f8d1a8ca2acda391fbb6a06b81c86",
+    image = "gcr.io/distroless/base",
+    platforms = [
+        "linux/amd64",
+        "linux/arm64",
+    ],
+)
+use_repo(
+    oci,
+    "distroless_base",
+    "distroless_base_linux_amd64",
+    "distroless_base_linux_arm64",
+)

@@ -1,0 +1,27 @@
+load("@com_google_protobuf//bazel:proto_library.bzl", "proto_library")
+load("@rules_go//go:def.bzl", "go_library")
+load("@rules_go//proto:def.bzl", "go_proto_library")
+
+proto_library(
+    name = "proto_proto",
+    srcs = ["controller.proto"],
+    visibility = ["//visibility:public"],
+)
+
+go_proto_library(
+    name = "proto_go_proto",
+    compilers = [
+        "@rules_go//proto:go_proto",
+        "@rules_go//proto:go_grpc_v2",
+    ],
+    importpath = "go.atoms.co/splitter-examples/robots/proto",
+    proto = ":proto_proto",
+    visibility = ["//visibility:public"],
+)
+
+go_library(
+    name = "proto",
+    embed = [":proto_go_proto"],
+    importpath = "go.atoms.co/splitter-examples/robots/proto",
+    visibility = ["//visibility:public"],
+)
