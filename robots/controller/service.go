@@ -6,9 +6,9 @@ import (
 	"sync/atomic"
 	"time"
 
+	"go.atoms.co/iox"
 	"go.atoms.co/lib/chanx"
 	"go.atoms.co/lib/encoding/protox"
-	"go.atoms.co/lib/iox"
 	"go.atoms.co/lib/log"
 	"go.atoms.co/lib/net/grpcx"
 	robotspb "go.atoms.co/splitter-examples/robots/proto"

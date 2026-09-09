@@ -7,8 +7,8 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"go.atoms.co/iox"
 	"go.atoms.co/lib/encoding/protox"
-	"go.atoms.co/lib/iox"
 	"go.atoms.co/lib/log"
 	"go.atoms.co/lib/mapx"
 	"go.atoms.co/lib/syncx"

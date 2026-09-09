@@ -7,8 +7,8 @@ go_library(
     visibility = ["//visibility:public"],
     deps = [
         "//robots/proto",
+        "@co_atoms_go_iox//:iox",
         "@co_atoms_go_lib//encoding/protox",
-        "@co_atoms_go_lib//iox",
         "@co_atoms_go_lib//log",
         "@co_atoms_go_lib//net/grpcx",
         "@co_atoms_go_lib//service/logx",

@@ -8,13 +8,13 @@ import (
 	"time"
 
 	"github.com/spf13/cobra"
+	"go.atoms.co/iox"
 	"go.atoms.co/lib/backoffx"
-	"go.atoms.co/lib/iox"
 	"go.atoms.co/lib/log"
 	"go.atoms.co/lib/net/grpcx"
+	"go.atoms.co/lib/net/location/go/location"
 	"go.atoms.co/lib/service/logx"
 	"go.atoms.co/lib/signalx"
-	"go.atoms.co/splitter/lib/service/location"
 	splitter "go.atoms.co/splitter/pkg/model"
 	"google.golang.org/grpc"
 )
